@@ -7,7 +7,8 @@ var cattle= new schema({
    color:{type:Number},
    health:{type:Boolean},
    price:{type:Number},
-   location: [String]
+   location: [String],
+   entry:{type:String}
 })
 var pasture=new schema({
    temp:[Number],
@@ -15,7 +16,7 @@ var pasture=new schema({
    population:[Number]
 })
 var farmschema=new schema({
-   feeding: [pasture],
+   land: [pasture],
    herd: [cattle],
 });
 mongoose.model('farm', farmschema, 'farms')

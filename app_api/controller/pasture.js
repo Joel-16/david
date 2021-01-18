@@ -1,10 +1,10 @@
 var mongoose=require('mongoose')
-var loc=mongoose.model('farm')
+var farm=mongoose.model('farm')
 
-module.exports.reviewscreate=function(req,res){
+module.exports.landcreate=function(req,res){
    var id= req.params.id;
    if (id){
-      loc
+      farm
          .findById(id)
          .select('reviews')
          .exec((err, location)=>{
@@ -31,9 +31,9 @@ module.exports.reviewscreate=function(req,res){
    }else
    sendstatus(res, 404, {"message":"location Id not found"})
 }
-module.exports.reviewsReadOne=function(req,res){
+module.exportslandReadOne=function(req,res){
    if (req.params && req.params.id && req.params.reviewid) {
-      loc
+      farm
          .findById(req.params.id)
          .select('name reviews')
          .exec(function (err, location) {
@@ -73,9 +73,9 @@ module.exports.reviewsReadOne=function(req,res){
       });
    }
 };
-module.exports.reviewsReadall=function(req,res){
+module.exports.landReadall=function(req,res){
    if (req.params && req.params.id) {
-      loc
+      farm
          .findById(req.params.id)
          .select('name reviews')
          .exec(function (err, location) {
@@ -116,9 +116,9 @@ module.exports.reviewsReadall=function(req,res){
       });
    }
 };
-module.exports.reviewsUpdateOne=function(req,res){
+module.exports.landUpdateOne=function(req,res){
    if (req.params && req.params.id && req.params.reviewid) {
-      loc
+      farm
          .findById(req.params.id)
          .select('name reviews')
          .exec(function (err, location) {
@@ -163,9 +163,9 @@ module.exports.reviewsUpdateOne=function(req,res){
       });
    }
 }
-module.exports.reviewsDeleteOne=function(req,res){
+module.exports.landDeleteOne=function(req,res){
    if (req.params && req.params.id && req.params.reviewid) {
-      loc
+      farm
          .findById(req.params.id)
          .select('reviews')
          .exec((err, location)=>{
@@ -195,7 +195,7 @@ module.exports.reviewsDeleteOne=function(req,res){
 }
 
 var updateRating=(x)=>{
-   loc
+   farm
       .findById(x)
       .select('rating reviews')
       .exec(

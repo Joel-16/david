@@ -1,25 +1,25 @@
 var express = require('express');
 var router = express.Router();
-var cattle= require('../controller/farm')
-var pasture=require('../controller/review')
+var cattle= require('../controller/cattle')
+var pasture=require('../controller/pasture')
 var apioptions={server:'http://localhost:3000'};
 if (process.env.NODE_ENV==='production'){
     apioptions.server=' https://papa-joe.herokuapp.com/'
 }
 
-// locations
-router.get('/apiloc', cattle.locations);
-router.post('/apiloc', cattle.locationscreate);
-router.get('/apiloc/:id', cattle.locationsReadOne);
-router.put('/apiloc/:id', cattle.locationsUpdateOne);
-router.delete('/apiloc/:id', cattle.locationsDeleteOne);
+// cattle
+router.get('/apiloc/herd', cattle.cattle);
+router.get('/apiloc/herd/:id', cattle.cattleReadOne);
+router.post('/apiloc/herd', cattle.cattlecreate);
+router.put('/apiloc/:id', cattle.cattleUpdateOne);
+router.delete('/apiloc/:id', cattle.cattleDeleteOne);
 
 
-// reviews
-router.post('/apiloc/:id/reviews', pasture.reviewscreate);
-router.get('/apiloc/:id/reviews/:reviewid', pasture.reviewsReadOne);
-router.get('/apiloc/:id/reviews', pasture.reviewsReadall);
-router.put('/apiloc/:id/reviews/:reviewid', pasture.reviewsUpdateOne);
-router.delete('/apiloc/:id/reviews/:reviewid', pasture.reviewsDeleteOne);
+// land
+router.get('/apiloc/land', pasture.landReadall);
+router.post('/apiloc/land', pasture.landcreate);
+router.get('/apiloc/land/:id', pasture.landReadOne);
+router.put('/apiloc/land/:id', pasture.landUpdateOne);
+router.delete('/apiloc/land/:id', pasture.landDeleteOne);
 
 module.exports=router;
