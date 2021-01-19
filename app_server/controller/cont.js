@@ -1,6 +1,6 @@
-module.exports.homepage= function( req ,res, next){
-            
-    
+module.exports.homepage= function( req ,res, next){   
+    res.render('index', { title: 'Express' });
+    sendstatus(res,200,{'message':'good'})
 };
 
 var sendstatus=(res,status,content)=>{
