@@ -11,7 +11,7 @@ if (process.env.NODE_ENV==='production'){
 router.get('/apiloc/herd', cattle.cattle);
 router.get('/apiloc/herd/:id', cattle.cattleReadOne);
 router.post('/apiloc/herd', cattle.cattlecreate);
-router.put('/apiloc/:id', cattle.cattleUpdateOne);
+router.put('/apiloc/herd/:id', cattle.cattleUpdateOne);
 router.delete('/apiloc/:id', cattle.cattleDeleteOne);
 
 

@@ -19,6 +19,9 @@ module.exports.cattlecreate=function(req,res){
                price:req.body.price,
                entry:req.body.entry
             })
+            q=ans.herd[ans.herd.length -1]
+            q.location.push(req.body.location)
+            console.log(q)
             ans.save((err, ans)=>{
                var thiscattle
                if (err){
@@ -91,21 +94,23 @@ module.exports.cattleUpdateOne=function(req,res){
    if (req.params && req.params.id) {
       farm
          .findById(a)
-         .select ('-reviews -rating')
-         .exec(
-            function (err, location) {
-               location.name = req.body.name;
-               location.name = req.body.name;
-               location.address = req.body.address;
-               location.facilities = req.body.facilities.split(",");
-               location.coords = [parseFloat(req.body.lng),parseFloat(req.body.lat)];
-               location.openingTimes = [{
-                  days: req.body.days1,
-                  opening: req.body.opening1,
-                  closing: req.body.closing1,
-                  closed: req.body.closed1,
-               }];
-               location.save(function (err, location) {
+         .select ('name herd')
+         .exec((err, ans)=>{
+            herd=ans.herd[req.params.id]
+            if (!herd){
+               sendstatus(res,404, {"message":"no herd data found"})
+            }else {
+               herd.age=req.body.age
+               herd.gender=req.body.gender,
+               herd.weight=req.body.weight,
+               herd.color=req.body.color,
+               herd.health=req.body.health,
+               herd.price=req.body.price,
+               herd.entry=req.body.entry
+            }
+               q=ans.herd[req.params.id]
+               q.location.push(req.body.location)
+               ans.save(function (err, location) {
                   if (err) {
                      sendstatus(res, 404, err);
                   } else {
@@ -121,30 +126,39 @@ module.exports.cattleUpdateOne=function(req,res){
 module.exports.cattleDeleteOne = function (req, res) {
    if (req.params && req.params.id) {
       farm
-         .find(a)
-         .select('herd')
+         .findById(a)
+         .select('name herd')
          .exec((err, ans)=>{
             if (err){
-               sendstatus(res, 404, {"message":"error"})
-            }else if (!location){
-               sendstatus(res, 404, {"message":"data does not exist"})
+               sendstatus(res,400, err)
             }else{
                if (ans.herd && ans.herd.length > 0){
-                  if (req.params.id<location.reviews.length){
+                  if (req.params.id<ans.herd.length){
                      ans.herd.splice(req.params.id, 1)
                      ans.save((err, ans)=>{
-                        var thisreview
                         if (err){
                            sendstatus(res,400, err)
                         }else{
-                           thisreview=ans.herd[ans.herd.length -1]
-                           sendstatus(res, 201, null)
+                           thiscattle=ans.herd[ans.herd.length -1]
+                           sendstatus(res, 201, {"message":"successful"})
                         }
                      })
+                  } else {
+                     sendstatus (res, 404, {
+                        "message": "put a verifiable id "
+                     });
                   }
+               } else {
+                  sendstatus (res, 404, {
+                     "message": "No herd file found"
+                  });
                }
             }
          })
+   }else{
+      sendstatus (res, 404, {
+         "message": "Not found, locationid and reviewid are both required"
+      });
    }
 };
 

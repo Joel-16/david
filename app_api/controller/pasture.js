@@ -1,35 +1,38 @@
 var mongoose=require('mongoose')
 var farm=mongoose.model('farm')
+var a="6005bb2e70cc9927d19a8738"
 
 module.exports.landcreate=function(req,res){
-   var id= req.params.id;
-   if (id){
-      farm
-         .findById(id)
-         .select('reviews')
-         .exec((err, location)=>{
-            if (err){
-               sendstatus(res,400, err)
-            }else{
-               location.reviews.push({
-                  author: req.body.author,
-                  rating: req.body.rating,
-                  reviewtext: req.body.reviewtext
-               })
-               location.save((err, location)=>{
-                  var thisreview
-                  if (err){
-                     sendstatus(res,400, err)
-                  }else{
-                     updateRating(location._id)
-                     thisreview=location.reviews[location.reviews.length -1]
-                     sendstatus(res, 201, thisreview)
-                  }
-               })
-            }
-         })
-   }else
-   sendstatus(res, 404, {"message":"location Id not found"})
+   farm
+      .findById(a)
+      .select('name land')
+      .exec((err, ans)=>{
+         if (err){
+            sendstatus(res,400, err)
+         }else{
+            console.log(ans)
+            console.log(ans.land)
+            ans.land.push({
+               grass:true,
+               temp:2,
+               population:30
+            })
+            q=ans.land[ans.land.length -1 ]
+            console.log(q)
+            q.grass.push(req.body.grass)
+            q.temp.push(req.body.temp)
+            q.population.push(req.body.population)
+            ans.save((err, ans)=>{
+               var thisland
+               if (err){
+                  sendstatus(res,400, err)
+               }else{
+                  thisland=ans.land[ans.land.length -1]
+                  sendstatus(res, 201, thisland)
+               }
+            })
+         }
+      })
 }
 module.exports.landReadOne=function(req,res){
    if (req.params && req.params.id && req.params.reviewid) {
