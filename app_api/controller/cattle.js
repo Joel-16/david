@@ -8,7 +8,7 @@ module.exports.cattlecreate=function(req,res){
    whenever they are bought or given birth to
 */
    farm
-      .findById(a)
+      .find({name:'david'})
       .select('name herd')
       .exec((err, ans)=>{
          if (err){
@@ -45,7 +45,7 @@ module.exports.cattle=function(req,res){
 */
   // sendstatus(res, 200, {'mess':'good'})
    farm
-      .findById(a)
+      .find({name:'david'})
       .select('herd -_id')
       .exec(function (err, ans) {
          var response;
@@ -66,7 +66,7 @@ module.exports.cattleReadOne=function(req,res){
 */
    if (req.params && req.params.id) {
       farm
-         .findById(a)
+         .find({name:'david'})
          .select('herd')
          .exec(function (err, ans) {
             var response;
@@ -108,7 +108,7 @@ module.exports.cattleUpdateOne=function(req,res){
 */
    if (req.params && req.params.id) {
       farm
-         .findById(a)
+         .find({name:'david'})
          .select ('name herd')
          .exec((err, ans)=>{
             herd=ans.herd[req.params.id]
@@ -145,7 +145,7 @@ module.exports.cattleDeleteOne = function (req, res) {
 */
    if (req.params && req.params.id) {
       farm
-         .findById(a)
+         .find({name:'david'})
          .select('name herd')
          .exec((err, ans)=>{
             if (err){
@@ -183,7 +183,7 @@ module.exports.cattleAssign=(req,res)=>{
 /* this function assign a particular cattle to a secific pasture*/
    if (req.params && req.params.id) {
       farm
-         .findById(a)
+         .find({name:'david'})
          .select ('name herd')
          .exec((err, ans)=>{
             herd=ans.herd[req.params.id]
@@ -209,7 +209,7 @@ module.exports.cattleAssign=(req,res)=>{
 module.exports.cattleUnassign=(req,res)=>{
    if (req.params && req.params.id) {
       farm
-         .findById(a)
+         .find({name:'david'})
          .select('name herd')
          .exec((err, ans)=>{
             if (err){

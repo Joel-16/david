@@ -7,7 +7,7 @@ module.exports.landcreate=function(req,res){
 thus function creates the pasture to David's taste
 */
    farm
-      .findById(a)
+      .find({name:'david'})
       .select('name land')
       .exec((err, ans)=>{
          if (err){
@@ -37,7 +37,7 @@ this function lets you view the basic data of each pasture
 */
    if (req.params && req.params.id) {
       farm
-         .findById(a)
+         .find({name:'david'})
          .select('land -_id')
          .exec(function (err, ans) {
             var  response;
@@ -67,7 +67,7 @@ module.exports.landReadall=function(req,res){
 this function allows you to read all the pasture data at once
 */
    farm
-      .findById(a)
+      .find({name:'david'})
       .select('land -_id')
       .exec(function (err, ans) {
          var response;
@@ -88,7 +88,7 @@ this function lets you edit the data for the pasture
 */
    if (req.params && req.params.id) {
       farm
-         .findById(a)
+         .find({name:'david'})
          .select ('land')
          .exec((err, ans)=>{
             land=ans.land[req.params.id]
@@ -118,7 +118,7 @@ this function lets you delete a pasture when it goes beyond usage
 */
    if (req.params && req.params.id) {
       farm
-         .findById(a)
+         .find({name:'david'})
          .select('name land')
          .exec((err, ans)=>{
             if (err){
