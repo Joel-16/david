@@ -3,6 +3,10 @@ var farm=mongoose.model('farm')
 var a="6005bb2e70cc9927d19a8738"
 
 module.exports.cattlecreate=function(req,res){
+/* 
+   This function is incharge of adding cattles
+   whenever they are bought or given birth to
+*/
    farm
       .findById(a)
       .select('name herd')
@@ -27,7 +31,6 @@ module.exports.cattlecreate=function(req,res){
                if (err){
                   sendstatus(res,400, err)
                }else{
-
                   thiscattle=ans.herd[ans.herd.length -1]
                   sendstatus(res, 201, thiscattle)
                }
@@ -36,6 +39,10 @@ module.exports.cattlecreate=function(req,res){
       })
 }
 module.exports.cattle=function(req,res){
+/* 
+   This function is incharge of viewig all the basic data of the cattle
+   basically for debugging purpose
+*/
   // sendstatus(res, 200, {'mess':'good'})
    farm
       .findById(a)
@@ -53,6 +60,10 @@ module.exports.cattle=function(req,res){
       })
 };
 module.exports.cattleReadOne=function(req,res){
+/* 
+   This function is incharge of viewing the basic data of 
+   a single cattle
+*/
    if (req.params && req.params.id) {
       farm
          .findById(a)
@@ -91,6 +102,10 @@ module.exports.cattleReadOne=function(req,res){
       }
 };
 module.exports.cattleUpdateOne=function(req,res){
+/* 
+   This function is incharge of editing the basic data
+   of the cattle    
+*/
    if (req.params && req.params.id) {
       farm
          .findById(a)
@@ -124,6 +139,10 @@ module.exports.cattleUpdateOne=function(req,res){
    };
 }
 module.exports.cattleDeleteOne = function (req, res) {
+/* 
+   This function is incharge of removing cattles
+   whenever they are sold or die
+*/
    if (req.params && req.params.id) {
       farm
          .findById(a)
@@ -139,7 +158,6 @@ module.exports.cattleDeleteOne = function (req, res) {
                         if (err){
                            sendstatus(res,400, err)
                         }else{
-                           thiscattle=ans.herd[ans.herd.length -1]
                            sendstatus(res, 201, {"message":"successful"})
                         }
                      })
