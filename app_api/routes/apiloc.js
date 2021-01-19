@@ -2,10 +2,7 @@ var express = require('express');
 var router = express.Router();
 var cattle= require('../controller/cattle')
 var pasture=require('../controller/pasture')
-var apioptions={server:'http://localhost:3000'};
-if (process.env.NODE_ENV==='production'){
-    apioptions.server=' https://papa-joe.herokuapp.com/'
-}
+
 
 // cattle
 router.get('/apiloc/herd', cattle.cattle);//to view all the data of all the cattle at once
@@ -13,6 +10,9 @@ router.get('/apiloc/herd/:id', cattle.cattleReadOne);//to view the data of exact
 router.post('/apiloc/herd', cattle.cattlecreate);//to add data of a new cattle
 router.put('/apiloc/herd/:id', cattle.cattleUpdateOne);//to edit data of a single cattle
 router.delete('/apiloc/:id', cattle.cattleDeleteOne);//to remove data of a single cattle
+router.put('/apiloc/:id', cattle.cattleAssign);
+router.delete('/apiloc/herd/:id', cattle.cattleUnassign);
+
 
 
 // land

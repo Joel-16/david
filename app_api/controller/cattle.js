@@ -179,6 +179,70 @@ module.exports.cattleDeleteOne = function (req, res) {
       });
    }
 };
+module.exports.cattleAssign=(req,res)=>{
+/* this function assign a particular cattle to a secific pasture*/
+   if (req.params && req.params.id) {
+      farm
+         .findById(a)
+         .select ('name herd')
+         .exec((err, ans)=>{
+            herd=ans.herd[req.params.id]
+            if (!herd){
+               sendstatus(res,404, {"message":"no herd data found"})
+            }else {
+               q=ans.herd[req.params.id]
+               q.location.push(req.body.location)
+               ans.save(function (err, location) {
+                  if (err) {
+                     sendstatus(res, 404, err);
+                  } else {
+                     sendstatus(res, 200, location);
+                  }
+               });
+            }
+              
+         });
+   } else{
+         sendstatus(res, 404, {"message": "no id found"});
+   };
+}
+module.exports.cattleUnassign=(req,res)=>{
+   if (req.params && req.params.id) {
+      farm
+         .findById(a)
+         .select('name herd')
+         .exec((err, ans)=>{
+            if (err){
+               sendstatus(res,400, err)
+            }else{
+               if (ans.herd && ans.herd.length > 0){
+                  if (req.params.id<ans.herd.length){
+                     ans.herd[req.params.id].location.splice(ans.herd[req.params.id].location.length -1, 1)
+                     ans.save((err, ans)=>{
+                        if (err){
+                           sendstatus(res,400, err)
+                        }else{
+                           sendstatus(res, 201, {"message":"successful"})
+                        }
+                     })
+                  } else {
+                     sendstatus (res, 404, {
+                        "message": "put a verifiable id "
+                     });
+                  }
+               } else {
+                  sendstatus (res, 404, {
+                     "message": "No herd file found"
+                  });
+               }
+            }
+         })
+   }else{
+      sendstatus (res, 404, {
+         "message": "Not found, locationid and reviewid are both required"
+      });
+   }
+}
 
 
 var sendstatus=(res,status,content)=>{

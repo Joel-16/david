@@ -33,7 +33,7 @@ thus function creates the pasture to David's taste
 }
 module.exports.landReadOne=function(req,res){
 /*
-this function lets you view the basic data of eave pasture
+this function lets you view the basic data of each pasture
 */
    if (req.params && req.params.id) {
       farm
@@ -63,6 +63,9 @@ this function lets you view the basic data of eave pasture
    }
 };
 module.exports.landReadall=function(req,res){
+/*
+this function allows you to read all the pasture data at once
+*/
    farm
       .findById(a)
       .select('land -_id')
@@ -80,6 +83,9 @@ module.exports.landReadall=function(req,res){
    
 };
 module.exports.landUpdateOne=function(req,res){
+/*
+this function lets you edit the data for the pasture
+*/
    if (req.params && req.params.id) {
       farm
          .findById(a)
@@ -107,6 +113,9 @@ module.exports.landUpdateOne=function(req,res){
    };
 }
 module.exports.landDeleteOne=function(req,res){
+/*
+this function lets you delete a pasture when it goes beyond usage
+*/
    if (req.params && req.params.id) {
       farm
          .findById(a)
