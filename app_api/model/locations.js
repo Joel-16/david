@@ -4,7 +4,7 @@ var cattle= new schema({
    age:{type:Number},
    gender:{type:String},
    weight:{type:Number},
-   color:{type:Number},
+   color:{type:String},
    health:{type:Boolean},
    price:{type:Number},
    location: [String],

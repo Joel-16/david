@@ -31,7 +31,7 @@ module.exports.landcreate=function(req,res){
    }else
    sendstatus(res, 404, {"message":"location Id not found"})
 }
-module.exportslandReadOne=function(req,res){
+module.exports.landReadOne=function(req,res){
    if (req.params && req.params.id && req.params.reviewid) {
       farm
          .findById(req.params.id)

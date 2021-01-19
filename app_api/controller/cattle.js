@@ -1,11 +1,11 @@
 var mongoose=require('mongoose')
 var farm=mongoose.model('farm')
-var a={name:'david'}
+var a="6005bb2e70cc9927d19a8738"
 
 module.exports.cattlecreate=function(req,res){
    farm
-      .find(a)
-      .select('herd')
+      .findById(a)
+      .select('name herd')
       .exec((err, ans)=>{
          if (err){
             sendstatus(res,400, err)
@@ -17,17 +17,14 @@ module.exports.cattlecreate=function(req,res){
                color:req.body.color,
                health:req.body.health,
                price:req.body.price,
-               entry:{type:String}
-            })
-            ans.herd.location.push({
-               location:req.body.location
+               entry:req.body.entry
             })
             ans.save((err, ans)=>{
                var thiscattle
                if (err){
                   sendstatus(res,400, err)
                }else{
-                  loc=ans
+
                   thiscattle=ans.herd[ans.herd.length -1]
                   sendstatus(res, 201, thiscattle)
                }
@@ -36,70 +33,65 @@ module.exports.cattlecreate=function(req,res){
       })
 }
 module.exports.cattle=function(req,res){
+  // sendstatus(res, 200, {'mess':'good'})
    farm
-      .find(a)
-      .select('herd')
+      .findById(a)
+      .select('herd -_id')
       .exec(function (err, ans) {
-         var  review, response;
+         var response;
          if (!ans) {
             sendstatus(res, 404, {"message": "couldnt find data"});
             return;
          } else if (err) {
             sendstatus(res, 404, err);
             return;
-         }
-         if (ans.herd && ans.herd.length > 0) {
-            herd = ans.herd;
-            if (!herd) {
-               sendstatus(res, 404, {
-                  "message": "there is no section for herd"
-               });
-            } else {
-               response = {
-                  review: herd
-               };
-               sendstatus(res, 200, response);
-            }
-         } else {
-            sendstatus(res, 404, {
-               "message": "No reviews found"
-            });
-         }
-      }
-      );
-} else {
-   sendstatus (res, 404, {
-      "message": "Not found, locationid and reviewid are both required"
-   });
-}
+         }//sendstatus(res,200,ans)
+         sendstatus(res,200,ans.herd)
+      })
 };
 module.exports.cattleReadOne=function(req,res){
    if (req.params && req.params.id) {
       farm
-         .findById(req.params.id)
-         .exec(function (err, location) {
-            if (!location) {
-               sendstatus(res, 404, {
-                  "message": "couldnt find data"
-               });
+         .findById(a)
+         .select('herd')
+         .exec(function (err, ans) {
+            var response;
+            if (!ans) {
+               sendstatus(res, 404, {"message": "couldnt find data"});
                return;
             } else if (err) {
                sendstatus(res, 404, err);
                return;
             }
-            sendstatus(res, 200, location);
+            if (ans.herd && ans.herd.length > 0) {
+               herd = ans.herd[req.params.id];
+               if (!herd) {
+                  sendstatus(res, 404, {
+                     "message": "there is no section for herd"
+                  });
+               } else {
+                  response = {
+                     cattle: herd
+                  };
+                  sendstatus(res, 200, response);
+               }
+            } else {
+               sendstatus(res, 404, {
+                  "message": "No reviews found"
+               });
+            }
+         })
+      } else {
+         sendstatus(res, 404, {
+            "message": "No cattle found"
          });
-   } else {
-      sendstatus(res, 404, {
-         "message": "no id found"
-      });
-   }
+      }
 };
 module.exports.cattleUpdateOne=function(req,res){
    if (req.params && req.params.id) {
       farm
-         findById(req.params.id)
-         select ('-reviews -rating')
+         .findById(a)
+         .select ('-reviews -rating')
          .exec(
             function (err, location) {
                location.name = req.body.name;
@@ -127,23 +119,32 @@ module.exports.cattleUpdateOne=function(req,res){
    };
 }
 module.exports.cattleDeleteOne = function (req, res) {
-   var locationid = req.params.locationid;
-   if (locationid) {
+   if (req.params && req.params.id) {
       farm
-         .findByIdAndRemove(locationid)
-         .exec(
-            function (err, location) {
-               if (err) {
-                  sendstatus(res, 404, err);
-                  return;
+         .find(a)
+         .select('herd')
+         .exec((err, ans)=>{
+            if (err){
+               sendstatus(res, 404, {"message":"error"})
+            }else if (!location){
+               sendstatus(res, 404, {"message":"data does not exist"})
+            }else{
+               if (ans.herd && ans.herd.length > 0){
+                  if (req.params.id<location.reviews.length){
+                     ans.herd.splice(req.params.id, 1)
+                     ans.save((err, ans)=>{
+                        var thisreview
+                        if (err){
+                           sendstatus(res,400, err)
+                        }else{
+                           thisreview=ans.herd[ans.herd.length -1]
+                           sendstatus(res, 201, null)
+                        }
+                     })
+                  }
                }
-               sendJsonResponse(res, 204, null);
             }
-         );
-   } else {
-      sendstatus(res, 404, {
-         "message": "No locationid"
-      });
+         })
    }
 };
 

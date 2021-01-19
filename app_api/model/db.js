@@ -47,4 +47,4 @@ process.on('SIGTERM', function () {
       process.exit(0);
    });
 });
-require('../../../my/app_api/model/locations')
+require('../../../david/app_api/model/locations')

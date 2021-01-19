@@ -1,8 +1,6 @@
 var request=  require('request')
 var apioptions={server:'http://localhost:3000/'};
-if (process.env.NODE_ENV==='production'){
-    apioptions.server=' https://papa-joe.herokuapp.com/'
-}
+
 
 module.exports.homepage= function( req ,res, next){
     var requestopt, path;
